@@ -11,12 +11,10 @@ from accounts.models import User
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(
-        label="Password confirmation", widget=forms.PasswordInput
-    )
-
+        label="Password confirmation", widget=forms.PasswordInput)
     class Meta:
         model = User
-        fields = ["email"]
+        fields = '__all__'
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -44,7 +42,6 @@ class UserCreationForm(forms.ModelForm):
 # 내용변경
 class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField()
-
     class Meta:
         model = User
         fields = ["email", "password", "birthday", "name", "is_active", "is_admin"]

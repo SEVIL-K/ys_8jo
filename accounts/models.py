@@ -7,7 +7,7 @@ class UserManager(BaseUserManager):
 
             if not email:
                 raise ValueError("Users must have an email address")
-            user = self.model(email=self.normalize_email(email),)
+            user = self.model(email=self.normalize_email(email))
             user.set_password(password)
             if save == True:
                 user.save(using=self._db)
@@ -22,11 +22,12 @@ class UserManager(BaseUserManager):
         user.is_admin = True
         user.save(using=self._db)
         return user
+    
 class User(AbstractBaseUser):
-    email = models.EmailField("이메일_아이디", unique=True)
+    email = models.EmailField("이메일_아이디", max_length=255,unique=True)
     # 기존password는 가지고있으니 따로 안넣었습니다.
     name = models.CharField("이름", max_length=30)
-    birthday = models.DateField()
+    birthday = models.DateField(null=True,blank=True)
     # YYYY-MM-DD구조, 또는 드롭다운연결가능.
     profile_pic = models.ImageField(null=True,blank=True)
     join_date = models.DateTimeField(auto_now_add=True)
@@ -37,7 +38,7 @@ class User(AbstractBaseUser):
     
     objects = UserManager()
     
-    USERNAME_FIELD = "email" 
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     
     def __str__(self):
@@ -54,10 +55,10 @@ class User(AbstractBaseUser):
 
 #일부러 후의 복잡성떄매 상속 받지않았는데 받는게 나았을까요?
 class DeleteUser(models.Model):
-    email = models.EmailField("이메일_아이디", unique=True)
+    email = models.EmailField("이메일_아이디", max_length=255, unique=True)
     password = models.CharField(max_length=128)#가져옴
     name = models.CharField("이름", max_length=30)
-    birthday = models.DateField()
+    birthday = models.DateField(null=True,blank=True)
     profile_pic = models.ImageField(null=True,blank=True)
     join_date = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=False)
