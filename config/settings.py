@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
     'accounts',
@@ -105,6 +106,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -130,10 +138,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 from django.conf import settings
 from datetime import timedelta
-...
 
 SIMPLE_JWT = {
-"ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+"ACCESS_TOKEN_LIFETIME": timedelta(minutes=720),
 "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 "ROTATE_REFRESH_TOKENS": False,
 "BLACKLIST_AFTER_ROTATION": False,
@@ -171,3 +178,11 @@ SIMPLE_JWT = {
 "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
 "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+REST_FRAMEWORK = {
+'DEFAULT_AUTHENTICATION_CLASSES': (
+'rest_framework_simplejwt.authentication.JWTAuthentication',
+)
+}
+
+AUTH_USER_MODEL = "accounts.User"

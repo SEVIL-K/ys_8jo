@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from articles.models import Article, Comment, ArticlePicture
 from articles.serializers import ArticleSerializer, ArticleCreateSerializer, CommentSerializer, CommentCreateSerializer
 from rest_framework.generics import get_object_or_404
+from django.db.models.query_utils import Q
 
 class ArticleView(APIView):
     def get(self, request):
@@ -88,4 +89,10 @@ class CommentDetailView(APIView):
 
 class LikeView(APIView):
     def post(self, request, article_id):
-        pass
+        article = get_object_or_404(Article, id=article_id)
+        if request.user in article.likes.all():
+            article.likes.remove(request.user)
+            return Response("like취소", status=status.HTTP_200_OK)
+        else:
+            article.likes.add(request.user)
+            return Response("like", status=status.HTTP_200_OK)
