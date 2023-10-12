@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from articles.models import Article, Comment, ArticlePicture
+from articles.models import Article, Comment
 from articles.serializers import ArticleSerializer, ArticleCreateSerializer, CommentSerializer, CommentCreateSerializer
 from rest_framework.generics import get_object_or_404
 from django.db.models.query_utils import Q
@@ -53,13 +53,16 @@ class CommentView(APIView):
     def get(self, request, article_id):
         article = get_object_or_404(Article, id=article_id)
         comments = article.comment_set.all()
+        print(comments)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, article_id):
+        print(request.data)
         serializer = CommentCreateSerializer(data=request.data)
+        
         if serializer.is_valid():
-            serializer.save(user=request.user, article_id=article_id)
+            serializer.save(user=request.user, review_id=article_id)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

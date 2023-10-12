@@ -7,9 +7,8 @@ class Article(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="article")
-
     likes = models.ManyToManyField(User, related_name="like_articles", blank=True)
-
+    picture = models.ImageField(null=True, blank=True)
     def __str__(self):
         return str(self.title)
 
@@ -20,9 +19,7 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment")
     review = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comment_set")
+    
 
 
-class ArticlePicture(models.Model):
-    picture = models.ImageField(blank=True)
-    review = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="review")
 

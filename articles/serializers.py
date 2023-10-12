@@ -24,11 +24,15 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = '__all__'
 
-
+# class PictureSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ArticlePicture
+#         fields = ('picture',)
 class ArticleCreateSerializer(serializers.ModelSerializer):
+    # pictures = PictureSerializer(many=True, source='pictures', read_only=True)
     class Meta:
         model = Article
-        fields = ("title", "content")
+        fields = ("title", "content", "picture",)
 
 
 
@@ -48,7 +52,7 @@ class ArticleListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ("pk", "title", "image", "updated_at", "user", "likes_count", "comments_count")
+        fields = ("pk", "title", "picture", "updated_at", "user", "likes_count", "comments_count")
 
 
 class CommentCreateSerializer(serializers.ModelSerializer):
