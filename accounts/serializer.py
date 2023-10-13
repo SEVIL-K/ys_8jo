@@ -11,3 +11,23 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         #오버라이드 get_token(user)
         token['email'] = user.email
         return token
+    
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
+
+    def create(self, validated_data):   
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password) 
+        user.save()
+        return user
+
+    def update(self, validate_data):
+        password = validate_data.pop('password')
+        user = User(**validate_data)
+        user.set_password(password)
+        user.save()
+        return user
